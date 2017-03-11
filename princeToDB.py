@@ -12,9 +12,9 @@ def postOne(pageUrl):
     js = sp.jsonify_page(url = pageUrl)
 
     # POST REQUEST
-    url = "localhost:8080"
+    url = "http://localhost:8080"
     headers = {'content-type': 'application/json'}
-    response = requests.post(url, data=js, headers=headers)
+    response = req.post(url, data=js, headers=headers)
     
 
 
@@ -22,3 +22,7 @@ def postOne(pageUrl):
 def main():
     url = "http://www.dailyprincetonian.com/article/2017/03/park-president-impeached"
     postOne(url)
+
+
+if __name__=="__main__":
+    main()
