@@ -12,12 +12,19 @@ import sys
 import requests as req
 from bs4 import BeautifulSoup
 import re # for the date, homeboy
+import json
 
 # globl var defining date syntax for daily princetonian
 dateRE = '''(Jan |Feb |Mar |Apr |May |Jun |Jul |Aug |Sep |Oct |Nov |Dec )([1-9]|[12][0-9]|[3][01]), [2-9][0-9][0-9][0-9]'''
 
 
-def jsonify_page(url):
+"""
+Output depends on switch. The default output is an encoded JSON string with 
+article title, date, author, and body (with the paragraphs joined by newlines
+as defined in getBodyAsString(). If swtich is anyting else, the output is a list
+with one dict containing the page (for testing purposes).
+"""
+def jsonify_page(url, switch="JSON"):
     # download the page                                                                                                                                    
     soup = getSoup(url)
     # set all page contents                                                                                                                                           
@@ -29,7 +36,10 @@ def jsonify_page(url):
     body = getBodyAsString(body)
     # now convert to json dict
     bornAgain = [{'title': title, 'author': author, 'date': date, 'body': body}]
-    return bornAgain
+    if switch == "JSON":
+        return json.dumps(bornAgain)
+    else:
+        return bornAgain
 
 # utility testing
 def testUrl(testUrl):
