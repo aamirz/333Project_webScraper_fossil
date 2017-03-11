@@ -12,7 +12,7 @@ def postOne(pageUrl):
     js = sp.jsonify_page(url = pageUrl)
 
     # POST REQUEST
-    url = "something"
+    url = "localhost:8080"
     headers = {'content-type': 'application/json'}
     response = requests.post(url, data=js, headers=headers)
     
