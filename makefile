@@ -1,5 +1,5 @@
 clean:
-	rm test* *~ *# *test test*
+	rm test* *~ *# *test test* *.pyc
 
 test:
 	./runTests.sh
