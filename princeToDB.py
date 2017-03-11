@@ -16,3 +16,9 @@ def postOne(pageUrl):
     headers = {'content-type': 'application/json'}
     response = requests.post(url, data=js, headers=headers)
     
+
+
+# testing with one page url
+def main():
+    url = "http://www.dailyprincetonian.com/article/2017/03/park-president-impeached"
+    postOne(url)
