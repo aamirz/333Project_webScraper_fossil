@@ -13,9 +13,14 @@ import requests as req
 from bs4 import BeautifulSoup
 import re # for the date, homeboy
 import json
+import time
 
 # globl var defining date syntax for daily princetonian
 dateRE = '''(Jan |Feb |Mar |Apr |May |Jun |Jul |Aug |Sep |Oct |Nov |Dec )([1-9]|[12][0-9]|[3][01]), [2-9][0-9][0-9][0-9]'''
+
+# globl vars defining the section URL structure
+baseSectionURL = "http://www.dailyprincetonian.com/section/"
+sections = ["news", "opinion", "sports", "street", "multimedia", "blog/intersections", "special", "editorial"]
 
 
 """
@@ -120,6 +125,75 @@ def grabPageText(soup):
     # a list that contains all of the paragraphs in an article
     body = soup.select(".article-copy > p")
     return body
+
+
+# return a list of all article URLS from a query page
+# params is a list of length three, the first element is
+# the fromDate, second is toDate, third is query type
+# see comment on getPrinceQURL for more details
+def getArticleURLS(params):
+    qURL = getPrinceQURL(params[0], params[1], params[2])
+    soup = getSoup(qURL)
+    links = soup.select(".clearfix a")
+    urls = list()
+    baseURL = "http://www.dailyprincetonian.com"
+    # links are repeated, so we only select even indexes
+    for i in range(0, len(links), 2):
+        urls.append(links[i]['href'])
+
+    for i in range(0, len(urls)):
+        urls[i] = baseURL + urls[i]
+
+    return urls
+
+# construct a dated query string for articles
+# a QURL is a query URL 
+# dates are in the string format "aa/bb/cccc"
+# type is one of these possible strings: "article"; "media"; "post"
+def getPrinceQURL(fromDate, toDate, type):
+    fromMonth, fromDay, fromYear = fromDate.split("/")
+    toMonth, toDay, toYear = toDate.split("/")
+
+    # query string params
+    baseURL = "http://www.dailyprincetonian.com/search/"
+    fromMonthBase = "?a=1&s=&ti=&ts_month="
+    fromDayBase = "&ts_day="
+    fromYearBase = "&ts_year="
+    toMonthBase = "&te_month="
+    toDayBase = "&te_day="
+    toYearBase = "&te_year="
+    typeBase = "&au=&tg=&ty="
+    endURL = "&o=date"
+
+    construction = baseURL + fromMonthBase + fromMonth 
+    construction = construction + fromDayBase + fromDay 
+    construction = construction + fromYearBase + fromYear + toMonthBase
+    construction = construction + toMonth + toDayBase + toDay
+    construction = construction + toYearBase + toYear + typeBase + type + endURL
+
+    return construction
+
+# get today's articles in a list of JSON's using the time module
+def getTodaysArticles():
+    today = time.strftime("%m/%d/%Y")
+    # get today's articles 
+    urls = getArticleURLS([today, today, "article"])
+    outputJSON = list()
+    for url in urls:
+        outputJSON.append(jsonify_page(url))
+
+    return outputJSON
+
+# get a specific date's articles as a list of JSONS
+def getDatesArticles(date):
+    # get today's articles 
+    urls = getArticleURLS([date, date, "article"])
+    outputJSON = list()
+    for url in urls:
+        outputJSON.append(jsonify_page(url))
+
+    return outputJSON
+
 
 # run main
 if __name__ == "__main__":
