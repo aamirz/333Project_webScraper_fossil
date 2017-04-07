@@ -6,6 +6,7 @@ POSTS an article to our database.
 """
 import scrapePrince as sp
 import requests as req
+import json
 
 # scrape an article with url and post it
 def postOne(pageUrl):
@@ -21,7 +22,10 @@ def postOne(pageUrl):
 # testing with one page url
 def main():
     url = "http://www.dailyprincetonian.com/article/2017/03/park-president-impeached"
-    postOne(url)
+    js = sp.jsonify_page(url = url)
+    with open('sampleArticle.json', 'w') as outfile:
+        json.dump(js, outfile)
+#    postOne(url)
 
 
 if __name__=="__main__":

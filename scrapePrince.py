@@ -130,7 +130,8 @@ def grabPageText(soup):
 # return a list of all article URLS from a query page
 # params is a list of length three, the first element is
 # the fromDate, second is toDate, third is query type
-# see comment on getPrinceQURL for more details
+# dates are in the string format "mm/dd/yyyy"
+# type is one of these possible strings: "article"; "media"; "post"
 def getArticleURLS(params):
     qURL = getPrinceQURL(params[0], params[1], params[2])
     soup = getSoup(qURL)
@@ -148,7 +149,7 @@ def getArticleURLS(params):
 
 # construct a dated query string for articles
 # a QURL is a query URL 
-# dates are in the string format "aa/bb/cccc"
+# dates are in the string format "mm/dd/yyyy"
 # type is one of these possible strings: "article"; "media"; "post"
 def getPrinceQURL(fromDate, toDate, type):
     fromMonth, fromDay, fromYear = fromDate.split("/")
