@@ -29,22 +29,26 @@ article title, date, author, and body (with the paragraphs joined by newlines
 as defined in getBodyAsString(). If swtich is anyting else, the output is a list
 with one dict containing the page (for testing purposes).
 """
-def jsonify_page(url, switch="JSON"):
-    # download the page                                                                                                                                    
-    soup = getSoup(url)
-    # set all page contents                                                                                                                                           
-    title = getTitle(soup)[0].text
-    author = getAuthor(soup)[0].text
-    date = getDate(soup)
-    # body comes in list of paragraphs                                                                                                                                
-    body = grabPageText(soup)
-    body = getBodyAsString(body)
-    # now convert to json dict
-    bornAgain = [{'title': title, 'author': author, 'date': date, 'body': body}]
+def jsonify_page(urls, switch="JSON"):
+    outlist = list()
+    for url in urls:
+        # download the page                                                                                                                                    
+        soup = getSoup(url)
+        # set all page contents                                                                                                                                           
+        title = getTitle(soup)[0].text
+        author = getAuthor(soup)[0].text
+        date = getDate(soup)
+        # body comes in list of paragraphs                                                                                                                                
+        body = grabPageText(soup)
+        body = getBodyAsString(body)
+        # now convert to json dict
+        bornAgain = {'title': title, 'author': author, 'date': date, 'body': body}
+        outlist.append(bornAgain)
+
     if switch == "JSON":
-        return json.dumps(bornAgain)
+        return json.dumps(outlist, sort_keys = True, indent = 4)
     else:
-        return bornAgain
+        return outlist
 
 # utility testing
 def testUrl(testUrl):

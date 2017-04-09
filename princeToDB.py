@@ -53,7 +53,7 @@ def main():
 
         with open(filePath) as jsonFile:
             json_out = json.load(jsonFile)
-            print json_out
+            print "json to upload: " + json_out[0]["title"]
             # try-catch block
             try:
                 response = req.post(url, json=json_out, headers=headers)

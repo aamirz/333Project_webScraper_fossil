@@ -33,19 +33,21 @@ def main():
         today = time.strftime("%Y_%m_%d")
     else:
         today = gta_reformat(sys.argv[2])
+
+    # separate files
     for url in todayUrls:
         print url + "\n"
-        #outputJSON.append(sp.jsonify_page(url))
-        jsonOut = sp.jsonify_page(url)
+        jsonOut = sp.jsonify_page([url])
         with open(prefix + s + today + s + "article_" + str(i) + ".txt", "w") as outfile:
-            json.dump(jsonOut, outfile)
+            outfile.write(jsonOut)
         i = i + 1
+    
+    articles = sp.jsonify_page(todayUrls)
+    with open(prefix + s + today + s + "allArticles.txt", "w") as outfile:
+        outfile.write(articles)
+        print "pooling all articles successful"
     print "pulling today's articles successful"
 
-
-    # with open(prefix + s +  today + s + "articles.txt", "w") as outfile:
-    # json.dump(outputJSON, outfile)
-    print "write successful"
 
 if __name__=="__main__":
     main()
