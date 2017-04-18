@@ -8,4 +8,8 @@ export PYTHONIOENCODING
 
 mkdir "./${DAYDIR}"
 python getTodaysArticles.py ./ $DAY
-python princeToDB.py "./${DAYDIR}" 12 8080
+# testing for local host
+#python princeToDB.py "./${DAYDIR}" 12 8080
+
+# testing to herokuapp
+python princeToDB.py "./${DAYDIR}" 12

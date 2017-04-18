@@ -45,18 +45,22 @@ def main():
     s = "/"
 
     # POST REQUEST ARGUMENTS
-    url = "http://localhost:" + str(port)  + "/"
-    headers = {'content-type': 'application/json', 'User-Agent': 'my app'}
+    url = "https://prowler333.herokuapp.com/articles/"
+#    url = "http://localhost:" + str(port)  + "/"
+    headers = {'content-type': 'application/json'}
     
     for i in range(0, n):
         filePath = prefix + s + "article_" + str(i) + ".txt"
 
         with open(filePath) as jsonFile:
             json_out = json.load(jsonFile)
-            print "json to upload: " + json_out[0]["title"]
+            #print json_out
+            #print "json to upload: " + json_out[0]["title"]
             # try-catch block
             try:
-                response = req.post(url, json=json_out, headers=headers)
+                #response = req.post(url, json=json_out, headers=headers)
+                response = req.post(url, json=json_out[0])
+                print response.status_code
             except Exception:
                 pass
 

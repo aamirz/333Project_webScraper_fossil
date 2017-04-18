@@ -23,6 +23,36 @@ baseSectionURL = "http://www.dailyprincetonian.com/section/"
 sections = ["news", "opinion", "sports", "street", "multimedia", "blog/intersections", "special", "editorial"]
 
 
+def monthConvert(month):
+    conversion = { "Jan": '01',
+                   "Feb": '02',
+                   "Mar": '03',
+                   "Apr": '04',
+                   "May": '05',
+                   "Jun": '06',
+                   "Jul": '07',
+                   "Aug": '08',
+                   "Sep": '09',
+                   "Oct": '10',
+                   "Nov": '11',
+                   "Dec": '12'
+                   }
+    return conversion[month]
+
+def dayConvert(day):
+    if len(day) < 2:
+        return "0" + day
+    else:
+        return day
+
+def convertDate(date):
+    month, day, year = date.split(' ')
+    nMonth = monthConvert(month)
+    day = dayConvert(day[0:-1])
+    s = "-"
+    return year + s + nMonth + s + day + " " + "00:00:00" # default time
+    
+
 """
 Output depends on switch. The default output is an encoded JSON string with 
 article title, date, author, and body (with the paragraphs joined by newlines
@@ -37,10 +67,12 @@ def jsonify_page(urls, switch="JSON"):
         # set all page contents                                                                                                                                           
         title = getTitle(soup)[0].text
         author = getAuthor(soup)[0].text
-        date = getDate(soup)
+        date = convertDate(getDate(soup))
         # body comes in list of paragraphs                                                                                                                                
         body = grabPageText(soup)
         body = getBodyAsString(body)
+        if (len(body) == 0):
+            body = "/empty"
         # now convert to json dict
         bornAgain = {'title': title, 'author': author, 'date': date, 'body': body}
         outlist.append(bornAgain)
