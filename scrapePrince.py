@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 import re # for the date, homeboy
 import json
 import time
+import urllib2
 
 # globl var defining date syntax for daily princetonian
 dateRE = '''(Jan |Feb |Mar |Apr |May |Jun |Jul |Aug |Sep |Oct |Nov |Dec )([1-9]|[12][0-9]|[3][01]), [2-9][0-9][0-9][0-9]'''
@@ -22,7 +23,18 @@ dateRE = '''(Jan |Feb |Mar |Apr |May |Jun |Jul |Aug |Sep |Oct |Nov |Dec )([1-9]|
 baseSectionURL = "http://www.dailyprincetonian.com/section/"
 sections = ["news", "opinion", "sports", "street", "multimedia", "blog/intersections", "special", "editorial"]
 
+# write an image to a file, image is a binary object, fileName is a full path to the file 
+def writeImageToFile(image, fileName):
+    f = open(fileName, "wb")
+    f.write(image.read())
+    f.close()
 
+# get an image object by url
+def getImage(url):
+    image = urllib2.urlopen(url)
+    return image
+
+# convert the month to a formatted string for database
 def monthConvert(month):
     conversion = { "Jan": '01',
                    "Feb": '02',
@@ -161,6 +173,15 @@ def grabPageText(soup):
     # a list that contains all of the paragraphs in an article
     body = soup.select(".article-copy > p")
     return body
+
+# get a list of all image urls in an article's soup
+def getImURLS(soup):
+    images = soup.select('.article-copy img')
+    out = list()
+    for im in images:
+        out.append(im['src'])
+
+    return out
 
 
 # return a list of all article URLS from a query page

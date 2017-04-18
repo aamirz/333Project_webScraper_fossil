@@ -9,7 +9,8 @@ import sys
 import time
 import scrapePrince as sp
 import json
-
+import os
+import errno
 
 def gta_reformat(date):
     month, day, year = date.split("/")
@@ -25,22 +26,43 @@ def main():
         today = time.strftime("%m/%d/%Y")
     else:
         today = str(sys.argv[2])
-    todayUrls = sp.getArticleURLS([today, today, "article"])
-    # outputJSON = list()
-    i = 0
     
+############## ARTICLE FULL SCRAPE ###########################
+    # get the article urls for the given day
+    todayUrls = sp.getArticleURLS([today, today, "article"])
+        
     if len(sys.argv) < 3:
         today = time.strftime("%Y_%m_%d")
     else:
         today = gta_reformat(sys.argv[2])
 
-    # separate files
+    # separate file for each article 
+    i = 0
     for url in todayUrls:
         print url + "\n"
         jsonOut = sp.jsonify_page([url])
         with open(prefix + s + today + s + "article_" + str(i) + ".txt", "w") as outfile:
             outfile.write(jsonOut)
         i = i + 1
+
+############ IMAGE FULL SCRAPE #######################################
+    i = 0
+    for url in todayUrls:
+        imPath = prefix + s + today + s + "article_" + str(i) + "images/"
+        # check if the image directory exists for an article
+        make_sure_path_exists(imPath)
+        # update the counter
+        i = i + 1
+        # now get all images with this url 
+        soup = sp.getSoup(url)
+        imUrls = sp.getImURLS(soup)
+        # save each image to an appropriate file 
+        k = 0
+        for url in imUrls:
+            image = sp.getImage(url)
+            sp.writeImageToFile(image, imPath + "image_" + str(k) + ".jpeg")
+            k = k + 1
+                            
     
     articles = sp.jsonify_page(todayUrls)
     with open(prefix + s + today + s + "allArticles.txt", "w") as outfile:
@@ -48,6 +70,15 @@ def main():
         print "pooling all articles successful"
     print "pulling today's articles successful"
 
+
+# function to make a new directory taken from stackoverflow answer #2
+# http://stackoverflow.com/questions/273192/how-to-check-if-a-directory-exists-and-create-it-if-necessary
+def make_sure_path_exists(path):
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
 
 if __name__=="__main__":
     main()
