@@ -46,12 +46,13 @@ def main():
 
     # POST REQUEST ARGUMENTS
     url = "https://prowler333.herokuapp.com/articles/"
+    imdatUrl = "https://prowler333.herokuapp.com/images/"
 #    url = "http://localhost:" + str(port)  + "/"
     headers = {'content-type': 'application/json'}
     
     for i in range(0, n):
         filePath = prefix + s + "article_" + str(i) + ".txt"
-
+        
         with open(filePath) as jsonFile:
             json_out = json.load(jsonFile)
             #print json_out
@@ -60,9 +61,31 @@ def main():
             try:
                 #response = req.post(url, json=json_out, headers=headers)
                 response = req.post(url, json=json_out[0])
-                print response.status_code
+                # handle the status of posting
+                status = response.status_code
+                if status != 201:
+                    print "NOT SUCCESSFUL POSTING ARTICLE: " + str(i) + " STATUS CODE: " + str(status)
             except Exception:
                 pass
+
+            # now send the image urls separately 
+            responseData = json.loads(response.content)
+            print responseData['id']
+            for iurl in json_out[0]['images']:
+                if iurl is None:
+                    continue
+                else:
+                    print "image: " + iurl
+                    imJson = {'article' : responseData['id'], 'url': iurl}
+                    try:
+                        response = req.post(url = imdatUrl, json=imJson)
+                    
+                        # handle the status of posting
+                        status = response.status_code
+                        if status != 201:
+                            print "NOT SUCCESSFUL POSTING IMAGE URL: " + imUrl + " STATUS CODE: " + str(status)
+                    except Exception:
+                        pass
 
 
 #     url = "http://www.dailyprincetonian.com/article/2017/03/park-president-impeached"

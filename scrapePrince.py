@@ -64,6 +64,12 @@ def convertDate(date):
     s = "-"
     return year + s + nMonth + s + day + " " + "00:00:00" # default time
     
+# small function to catch empty lists of bs4 html objects 
+def listCatch(aList):
+    if len(aList) == 0:
+        return "/empty"
+    else:
+        return aList[0].text
 
 """
 Output depends on switch. The default output is an encoded JSON string with 
@@ -74,19 +80,28 @@ with one dict containing the page (for testing purposes).
 def jsonify_page(urls, switch="JSON"):
     outlist = list()
     for url in urls:
-        # download the page                                                                                                                                    
+        # download the page
+        
         soup = getSoup(url)
-        # set all page contents                                                                                                                                           
-        title = getTitle(soup)[0].text
-        author = getAuthor(soup)[0].text
+        # set all page contents
+#         title = getTitle(soup)
+#         if len(Title) < 0:
+#             title = "/empty"
+#         else:
+#             title = title[0].text
+        title = listCatch(getTitle(soup))
+        author = listCatch(getAuthor(soup))
+    
+    #    author = getAuthor(soup)[0].text
         date = convertDate(getDate(soup))
-        # body comes in list of paragraphs                                                                                                                                
+        imageUrls = getImURLS(soup)
+        # body comes in list of paragraphs
         body = grabPageText(soup)
         body = getBodyAsString(body)
         if (len(body) == 0):
             body = "/empty"
         # now convert to json dict
-        bornAgain = {'title': title, 'author': author, 'date': date, 'body': body}
+        bornAgain = {'title': title, 'author': author, 'date': date, 'body': body, 'images': imageUrls, 'url': url, 'publication': 2, 'topic': 2}
         outlist.append(bornAgain)
 
     if switch == "JSON":

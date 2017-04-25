@@ -27,7 +27,7 @@ def main():
     else:
         today = str(sys.argv[2])
     
-############## ARTICLE FULL SCRAPE ###########################
+############## ARTICLE FULL SCRAPE :: ADDED IMAGE VIRTUAL SCRAPE TO SP.JSONIFY ###########################
     # get the article urls for the given day
     todayUrls = sp.getArticleURLS([today, today, "article"])
         
@@ -39,36 +39,36 @@ def main():
     # separate file for each article 
     i = 0
     for url in todayUrls:
-        print url + "\n"
+        #print url + "\n"
         jsonOut = sp.jsonify_page([url])
         with open(prefix + s + today + s + "article_" + str(i) + ".txt", "w") as outfile:
             outfile.write(jsonOut)
         i = i + 1
 
 ############ IMAGE FULL SCRAPE #######################################
-    i = 0
-    for url in todayUrls:
-        imPath = prefix + s + today + s + "article_" + str(i) + "images/"
-        # check if the image directory exists for an article
-        make_sure_path_exists(imPath)
-        # update the counter
-        i = i + 1
-        # now get all images with this url 
-        soup = sp.getSoup(url)
-        imUrls = sp.getImURLS(soup)
-        # save each image to an appropriate file 
-        k = 0
-        for url in imUrls:
-            image = sp.getImage(url)
-            sp.writeImageToFile(image, imPath + "image_" + str(k) + ".jpeg")
-            k = k + 1
+#     i = 0
+#     for url in todayUrls:
+#         imPath = prefix + s + today + s + "article_" + str(i) + "images/"
+#         # check if the image directory exists for an article
+#         make_sure_path_exists(imPath)
+#         # update the counter
+#         i = i + 1
+#         # now get all images with this url 
+#         soup = sp.getSoup(url)
+#         imUrls = sp.getImURLS(soup)
+#         # save each image to an appropriate file 
+#         k = 0
+#         for url in imUrls:
+#             image = sp.getImage(url)
+#             sp.writeImageToFile(image, imPath + "image_" + str(k) + ".jpeg")
+#             k = k + 1
                             
-    
-    articles = sp.jsonify_page(todayUrls)
-    with open(prefix + s + today + s + "allArticles.txt", "w") as outfile:
-        outfile.write(articles)
-        print "pooling all articles successful"
-    print "pulling today's articles successful"
+    # pool all articles into one thing! 
+#     articles = sp.jsonify_page(todayUrls)
+#     with open(prefix + s + today + s + "allArticles.txt", "w") as outfile:
+#         outfile.write(articles)
+#         print "pooling all articles successful"
+#     print "pulling today's articles successful"
 
 
 # function to make a new directory taken from stackoverflow answer #2
