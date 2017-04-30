@@ -57,8 +57,8 @@ def dayConvert(day):
     else:
         return day
 
-def convertDate(date):
-    month, day, year = date.split(' ')
+def convertDate(date, c):
+    month, day, year = date.split(c)
     nMonth = monthConvert(month)
     day = dayConvert(day[0:-1])
     s = "-"
@@ -93,7 +93,9 @@ def jsonify_page(urls, switch="JSON"):
         author = listCatch(getAuthor(soup))
     
     #    author = getAuthor(soup)[0].text
-        date = convertDate(getDate(soup))
+        date = getDate(soup)
+        if date != "/empty":
+            date = convertDate(date, ' ')
         imageUrls = getImURLS(soup)
         # body comes in list of paragraphs
         body = grabPageText(soup)
@@ -180,8 +182,11 @@ def getAuthor(soup):
 
 def getDate(soup):
     date = soup.select(".author")
-    found = re.search(dateRE, date[0].text)
-    return found.group(0)
+    if len(date) != 0:
+        found = re.search(dateRE, date[0].text)
+        return found.group(0)
+    else:
+        return "/empty"
 
 # returns a list representation of a page's article body
 def grabPageText(soup):

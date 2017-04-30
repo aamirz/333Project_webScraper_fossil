@@ -31,7 +31,9 @@ def postOne(pageUrl, port):
 def main():
     # always specify the path to the webscraped directories
     prefix = str(sys.argv[1])
-    
+    today = prefix.split('/')
+    today = today[1]
+    year, month, day = today.split('_')
     # the number of articles in the directory
     n = int(sys.argv[2])
     
@@ -55,6 +57,8 @@ def main():
         
         with open(filePath) as jsonFile:
             json_out = json.load(jsonFile)
+            # reformat the date
+            json_out[0]['date'] = year + "-" + month + "-" + day + " " + "00:00:00"
             #print json_out
             #print "json to upload: " + json_out[0]["title"]
             # try-catch block
@@ -70,7 +74,13 @@ def main():
 
             # now send the image urls separately 
             responseData = json.loads(response.content)
-            print responseData['id']
+            print len(responseData)
+
+            # if the response fails, skip the rest, do not post any images 
+            if (len(responseData) == 1):
+                continue 
+
+            # post all images associated with an article 
             for iurl in json_out[0]['images']:
                 if iurl is None:
                     continue
@@ -79,7 +89,7 @@ def main():
                     imJson = {'article' : responseData['id'], 'url': iurl}
                     try:
                         response = req.post(url = imdatUrl, json=imJson)
-                    
+                        
                         # handle the status of posting
                         status = response.status_code
                         if status != 201:
