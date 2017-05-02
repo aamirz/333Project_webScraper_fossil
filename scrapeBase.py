@@ -69,3 +69,9 @@ def listCatch(aList):
         return "/empty"
     else:
         return aList[0].text
+
+def listCatchItem(aList):
+    if len(aList) == 0:
+        return "/empty"
+    else:
+        return aList[0]

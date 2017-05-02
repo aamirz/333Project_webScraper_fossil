@@ -58,6 +58,8 @@ def main():
                 status = response.status_code
                 if status != 201:
                     print "NOT SUCCESSFUL POSTING ARTICLE: " + str(i) + " STATUS CODE: " + str(status)
+                else:
+                    print "SUCCESSFUL"
             except Exception:
                 pass
 
