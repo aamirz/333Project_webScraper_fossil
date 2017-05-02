@@ -126,6 +126,19 @@ def getIssueArticleUrls(issueUrl):
             urls.append(url)
     return urls
 
-# get all the issues from the archival page of the nass
-def getArchiveIssueLinks(archiveUrl):
-    return 0
+# get all the issue urls / dates from the archival page of the nass
+# returns a list of len == 2, with the first element as list of urls
+# the second element in the returned list is a list of dates
+# NOTE: can use the datetime module when pulling to only pull new issues, on daily check!
+def getArchiveIssueLinks(archiveUrl="http://www.nassauweekly.com/issue/"):
+    soup = sb.getSoup(archiveUrl)
+    elements = soup.select("div h2 a")
+    issueUrls = list()
+    for el in elements:
+        issueUrls.append(el["href"])
+    # grab the dates as well!
+    elements = soup.select(".post-date")
+    dates = list()
+    for el in elements:
+        dates.append(sb.parseDate(el.text).split(" ")[0])
+    return [issueUrls, dates]
