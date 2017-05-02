@@ -7,7 +7,7 @@
 # Group: COS 333: Eric Hayes '18, Emily Tang '18, Fabian Lindfield Roberts '18
 ############################################################################################
 
-# dependencies 
+# dependencies
 import sys
 import requests as req
 from bs4 import BeautifulSoup
@@ -16,6 +16,10 @@ import json
 import time
 import urllib2
 
+# libraries written for prowler
+import scrapeBase as sb
+
+""" DEBUG """
 # globl var defining date syntax for daily princetonian
 dateRE = '''(Jan |Feb |Mar |Apr |May |Jun |Jul |Aug |Sep |Oct |Nov |Dec )([1-9]|[12][0-9]|[3][01]), [2-9][0-9][0-9][0-9]'''
 
@@ -23,7 +27,8 @@ dateRE = '''(Jan |Feb |Mar |Apr |May |Jun |Jul |Aug |Sep |Oct |Nov |Dec )([1-9]|
 baseSectionURL = "http://www.dailyprincetonian.com/section/"
 sections = ["news", "opinion", "sports", "street", "multimedia", "blog/intersections", "special", "editorial"]
 
-# write an image to a file, image is a binary object, fileName is a full path to the file 
+""" DEBUG
+# write an image to a file, image is a binary object, fileName is a full path to the file
 def writeImageToFile(image, fileName):
     f = open(fileName, "wb")
     f.write(image.read())
@@ -33,7 +38,9 @@ def writeImageToFile(image, fileName):
 def getImage(url):
     image = urllib2.urlopen(url)
     return image
+"""
 
+""" DEBUG
 # convert the month to a formatted string for database
 def monthConvert(month):
     conversion = { "Jan": '01',
@@ -63,16 +70,20 @@ def convertDate(date, c):
     day = dayConvert(day[0:-1])
     s = "-"
     return year + s + nMonth + s + day + " " + "00:00:00" # default time
-    
-# small function to catch empty lists of bs4 html objects 
+"""
+
+""" DEBUG
+# small function to catch empty lists of bs4 html objects
+# gets the first object in the bs4 list
 def listCatch(aList):
     if len(aList) == 0:
         return "/empty"
     else:
         return aList[0].text
+"""
 
 """
-Output depends on switch. The default output is an encoded JSON string with 
+Output depends on switch. The default output is an encoded JSON string with
 article title, date, author, and body (with the paragraphs joined by newlines
 as defined in getBodyAsString(). If swtich is anyting else, the output is a list
 with one dict containing the page (for testing purposes).
@@ -81,21 +92,21 @@ def jsonify_page(urls, switch="JSON"):
     outlist = list()
     for url in urls:
         # download the page
-        
-        soup = getSoup(url)
+
+        soup = sb.getSoup(url)
         # set all page contents
 #         title = getTitle(soup)
 #         if len(Title) < 0:
 #             title = "/empty"
 #         else:
 #             title = title[0].text
-        title = listCatch(getTitle(soup))
-        author = listCatch(getAuthor(soup))
-    
+        title = sb.listCatch(getTitle(soup))
+        author = sb.listCatch(getAuthor(soup))
+
     #    author = getAuthor(soup)[0].text
         date = getDate(soup)
         if date != "/empty":
-            date = convertDate(date, ' ')
+            date = sb.convertDate(date, ' ')
         imageUrls = getImURLS(soup)
         # body comes in list of paragraphs
         body = grabPageText(soup)
@@ -114,25 +125,25 @@ def jsonify_page(urls, switch="JSON"):
 # utility testing
 def testUrl(testUrl):
     # only download the page once
-    soup = getSoup(testUrl)
+    soup = sb.getSoup(testUrl)
 
     # get the article title, time, author
     title = getTitle(soup)
     sys.stdout.write("Title:\t\t")
     sys.stdout.write(title[0].text)
     writeN()
-    
+
     author = getAuthor(soup)
     sys.stdout.write("Author:\t\t")
     sys.stdout.write(author[0].text)
-    
+
     date = getDate(soup)
     sys.stdout.write("\t\tDate:\t\t")
     sys.stdout.write(date)
     writeN()
-    
+
     # get the body text of our soup
-    body = grabPageText(soup)    
+    body = grabPageText(soup)
     # print out the article body
     for p in body:
         sys.stdout.write(p.text)
@@ -164,11 +175,13 @@ def writeN():
     sys.stdout.write("\n\n")
     return
 
-# download the page 
+""" DEBUG
+# download the page
 def getSoup(pageURL):
     page = req.get(pageURL)
     soup = BeautifulSoup(page.text, 'html.parser')
     return soup
+"""
 
 # grab the article title
 def getTitle(soup):
@@ -211,7 +224,7 @@ def getImURLS(soup):
 # type is one of these possible strings: "article"; "media"; "post"
 def getArticleURLS(params):
     qURL = getPrinceQURL(params[0], params[1], params[2])
-    soup = getSoup(qURL)
+    soup = sb.getSoup(qURL)
     links = soup.select(".clearfix a")
     urls = list()
     baseURL = "http://www.dailyprincetonian.com"
@@ -225,7 +238,7 @@ def getArticleURLS(params):
     return urls
 
 # construct a dated query string for articles
-# a QURL is a query URL 
+# a QURL is a query URL
 # dates are in the string format "mm/dd/yyyy"
 # type is one of these possible strings: "article"; "media"; "post"
 def getPrinceQURL(fromDate, toDate, type):
@@ -243,8 +256,8 @@ def getPrinceQURL(fromDate, toDate, type):
     typeBase = "&au=&tg=&ty="
     endURL = "&o=date"
 
-    construction = baseURL + fromMonthBase + fromMonth 
-    construction = construction + fromDayBase + fromDay 
+    construction = baseURL + fromMonthBase + fromMonth
+    construction = construction + fromDayBase + fromDay
     construction = construction + fromYearBase + fromYear + toMonthBase
     construction = construction + toMonth + toDayBase + toDay
     construction = construction + toYearBase + toYear + typeBase + type + endURL
@@ -254,7 +267,7 @@ def getPrinceQURL(fromDate, toDate, type):
 # get today's articles in a list of JSON's using the time module
 def getTodaysArticles():
     today = time.strftime("%m/%d/%Y")
-    # get today's articles 
+    # get today's articles
     urls = getArticleURLS([today, today, "article"])
     outputJSON = list()
     for url in urls:
@@ -264,7 +277,7 @@ def getTodaysArticles():
 
 # get a specific date's articles as a list of JSONS
 def getDatesArticles(date):
-    # get today's articles 
+    # get today's articles
     urls = getArticleURLS([date, date, "article"])
     outputJSON = list()
     for url in urls:

@@ -12,12 +12,15 @@ import json
 import os
 import errno
 
+# libraries written for prowler
+import scrapeBase as sb
+
 def gta_reformat(date):
     month, day, year = date.split("/")
     return year + "_" + month + "_" + day
 
 # takes two comman line args, the first is the prefix to the parent of saving
-# dir, the second is the day's date 
+# dir, the second is the day's date
 def main():
     ## the first command line arg is the prefix to the saving directory
     prefix = str(sys.argv[1])
@@ -26,17 +29,17 @@ def main():
         today = time.strftime("%m/%d/%Y")
     else:
         today = str(sys.argv[2])
-    
+
 ############## ARTICLE FULL SCRAPE :: ADDED IMAGE VIRTUAL SCRAPE TO SP.JSONIFY ###########################
     # get the article urls for the given day
     todayUrls = sp.getArticleURLS([today, today, "article"])
-        
+
     if len(sys.argv) < 3:
         today = time.strftime("%Y_%m_%d")
     else:
         today = gta_reformat(sys.argv[2])
 
-    # separate file for each article 
+    # separate file for each article
     i = 0
     for url in todayUrls:
         #print url + "\n"
@@ -53,17 +56,17 @@ def main():
 #         make_sure_path_exists(imPath)
 #         # update the counter
 #         i = i + 1
-#         # now get all images with this url 
-#         soup = sp.getSoup(url)
+#         # now get all images with this url
+#         soup = sb.getSoup(url)
 #         imUrls = sp.getImURLS(soup)
-#         # save each image to an appropriate file 
+#         # save each image to an appropriate file
 #         k = 0
 #         for url in imUrls:
 #             image = sp.getImage(url)
 #             sp.writeImageToFile(image, imPath + "image_" + str(k) + ".jpeg")
 #             k = k + 1
-                            
-    # pool all articles into one thing! 
+
+    # pool all articles into one thing!
 #     articles = sp.jsonify_page(todayUrls)
 #     with open(prefix + s + today + s + "allArticles.txt", "w") as outfile:
 #         outfile.write(articles)
@@ -82,4 +85,3 @@ def make_sure_path_exists(path):
 
 if __name__=="__main__":
     main()
-    
