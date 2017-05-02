@@ -52,40 +52,14 @@ def convertDate(date, c):
     s = "-"
     return year + s + nMonth + s + day + " " + "00:00:00" # default time
 
-""" DEBUG
-# true if string s is a month
-def isMonth(s):
-    months = ["Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"]
-
-    if s in months:
-        return True
-    else:
-        return False
-
-# ture if s is a day
-def isDay(s):
-"""
-
-
-
 # parse the date string, select the month day and year
 def parseDate(date):
     if date != "/empty":
         found = re.search(dateRE, date)
         elect = found.group(0)
         return convertDate(elect, " ")
-
+    else:
+        return "/empty"
 
 
 # small function to catch empty lists of bs4 html objects

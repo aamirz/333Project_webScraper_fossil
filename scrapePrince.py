@@ -19,68 +19,10 @@ import urllib2
 # libraries written for prowler
 import scrapeBase as sb
 
-""" DEBUG """
-# globl var defining date syntax for daily princetonian
-dateRE = '''(Jan |Feb |Mar |Apr |May |Jun |Jul |Aug |Sep |Oct |Nov |Dec )([1-9]|[12][0-9]|[3][01]), [2-9][0-9][0-9][0-9]'''
-
 # globl vars defining the section URL structure
 baseSectionURL = "http://www.dailyprincetonian.com/section/"
 sections = ["news", "opinion", "sports", "street", "multimedia", "blog/intersections", "special", "editorial"]
 
-""" DEBUG
-# write an image to a file, image is a binary object, fileName is a full path to the file
-def writeImageToFile(image, fileName):
-    f = open(fileName, "wb")
-    f.write(image.read())
-    f.close()
-
-# get an image object by url
-def getImage(url):
-    image = urllib2.urlopen(url)
-    return image
-"""
-
-""" DEBUG
-# convert the month to a formatted string for database
-def monthConvert(month):
-    conversion = { "Jan": '01',
-                   "Feb": '02',
-                   "Mar": '03',
-                   "Apr": '04',
-                   "May": '05',
-                   "Jun": '06',
-                   "Jul": '07',
-                   "Aug": '08',
-                   "Sep": '09',
-                   "Oct": '10',
-                   "Nov": '11',
-                   "Dec": '12'
-                   }
-    return conversion[month]
-
-def dayConvert(day):
-    if len(day) < 2:
-        return "0" + day
-    else:
-        return day
-
-def convertDate(date, c):
-    month, day, year = date.split(c)
-    nMonth = monthConvert(month)
-    day = dayConvert(day[0:-1])
-    s = "-"
-    return year + s + nMonth + s + day + " " + "00:00:00" # default time
-"""
-
-""" DEBUG
-# small function to catch empty lists of bs4 html objects
-# gets the first object in the bs4 list
-def listCatch(aList):
-    if len(aList) == 0:
-        return "/empty"
-    else:
-        return aList[0].text
-"""
 
 """
 Output depends on switch. The default output is an encoded JSON string with
@@ -92,21 +34,13 @@ def jsonify_page(urls, switch="JSON"):
     outlist = list()
     for url in urls:
         # download the page
-
         soup = sb.getSoup(url)
-        # set all page contents
-#         title = getTitle(soup)
-#         if len(Title) < 0:
-#             title = "/empty"
-#         else:
-#             title = title[0].text
+
+        # get the page content
         title = sb.listCatch(getTitle(soup))
         author = sb.listCatch(getAuthor(soup))
-
-    #    author = getAuthor(soup)[0].text
         date = getDate(soup)
-        if date != "/empty":
-            date = sb.convertDate(date, ' ')
+        # get the image urls
         imageUrls = getImURLS(soup)
         # body comes in list of paragraphs
         body = grabPageText(soup)
@@ -175,14 +109,6 @@ def writeN():
     sys.stdout.write("\n\n")
     return
 
-""" DEBUG
-# download the page
-def getSoup(pageURL):
-    page = req.get(pageURL)
-    soup = BeautifulSoup(page.text, 'html.parser')
-    return soup
-"""
-
 # grab the article title
 def getTitle(soup):
     title = soup.select(".headline")
@@ -194,12 +120,9 @@ def getAuthor(soup):
     return author
 
 def getDate(soup):
-    date = soup.select(".author")
-    if len(date) != 0:
-        found = re.search(dateRE, date[0].text)
-        return found.group(0)
-    else:
-        return "/empty"
+    elements = soup.select(".author")
+    # catch the list (if empty) then parse the date
+    return sb.parseDate(sb.listCatch(elements))
 
 # returns a list representation of a page's article body
 def grabPageText(soup):
