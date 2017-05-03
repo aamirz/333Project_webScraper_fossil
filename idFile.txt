@@ -1,0 +1,44 @@
+[
+    {
+        "nass": 442,
+        "prince": 432
+    },
+    [
+        {
+            "publication": "prince"
+        },
+        {
+            "id": 462,
+            "name": "news"
+        },
+        {
+            "id": 472,
+            "name": "opinion"
+        },
+        {
+            "id": 482,
+            "name": "sports"
+        },
+        {
+            "id": 492,
+            "name": "street"
+        },
+        {
+            "id": 502,
+            "name": "blog"
+        },
+        {
+            "id": 512,
+            "name": "editorial"
+        }
+    ],
+    [
+        {
+            "publication": "nass"
+        },
+        {
+            "id": 522,
+            "name": "humor"
+        }
+    ]
+]
