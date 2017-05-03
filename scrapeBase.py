@@ -4,6 +4,7 @@ Aamir Zainulabadeen
 Base functions to be used by all of the scraping scripts.
 """
 import sys
+import json
 import requests as req
 from bs4 import BeautifulSoup
 import re # for the date homeboy
@@ -50,7 +51,7 @@ def convertDate(date, c):
     nMonth = monthConvert(month)
     day = dayConvert(day[0:-1])
     s = "-"
-    return year + s + nMonth + s + day + " " + "00:00:00" # default time
+    return year + s + nMonth + s + day + " " + "06:00:00" # default time
 
 # parse the date string, select the month day and year
 def parseDate(date):
@@ -70,8 +71,41 @@ def listCatch(aList):
     else:
         return aList[0].text
 
+# catch the first item in a list and return it
 def listCatchItem(aList):
     if len(aList) == 0:
         return "/empty"
     else:
         return aList[0]
+
+# get the publication id from the master table
+def getPublicationId(publication):
+    if publication is None:
+        print "Bad publication field in getPublicationId!"
+        return 0
+
+    # read in the file
+    id = 0
+    with open("idFile.txt") as idF:
+        masterTable = json.load(idF)
+        id = masterTable[0][publication]
+    return id
+
+# get the publication topics from the master table
+# return a list of dicts that hold the topic ids and topics
+def getPublicationTopics(publication):
+    if publication is None:
+        print "Bad publication field in getPublicationId!"
+        return 0
+
+    # read in the master table file
+    id = 0
+    with open("idFile.txt") as idF:
+        masterTable = json.load(idF)
+        # search the master table
+        for i in range(1, len(masterTable)):
+            if masterTable[i][0]["publication"] == publication:
+                return masterTable[i][1:]
+
+        # if the fail the search, return -1
+        return -1

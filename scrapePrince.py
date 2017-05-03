@@ -1,10 +1,13 @@
 ############################################################################################
-# grabPage.py
+# scrapePrince.py
 #
 #
 # Author: Aamir Zainulabdeen
 #
 # Group: COS 333: Eric Hayes '18, Emily Tang '18, Fabian Lindfield Roberts '18
+#
+# The base methods for scraping the Daily Princetonian. See function comments for
+# details.
 ############################################################################################
 
 # dependencies
@@ -23,14 +26,17 @@ import scrapeBase as sb
 baseSectionURL = "http://www.dailyprincetonian.com/section/"
 sections = ["news", "opinion", "sports", "street", "multimedia", "blog/intersections", "special", "editorial"]
 
+# globl for the publication id of the daily princetonian
+publicationId = sb.getPublicationId("prince")
 
 """
 Output depends on switch. The default output is an encoded JSON string with
 article title, date, author, and body (with the paragraphs joined by newlines
 as defined in getBodyAsString(). If swtich is anyting else, the output is a list
-with one dict containing the page (for testing purposes).
+with one dict containing the page (for testing purposes). The topic id is an integer
+in the database, all of which are specified in formatDB.py and idFile.txt.
 """
-def jsonify_page(urls, switch="JSON"):
+def jsonify_page(urls, topicId, switch="JSON"):
     outlist = list()
     for url in urls:
         # download the page
@@ -48,7 +54,10 @@ def jsonify_page(urls, switch="JSON"):
         if (len(body) == 0):
             body = "/empty"
         # now convert to json dict
-        bornAgain = {'title': title, 'author': author, 'date': date, 'body': body, 'images': imageUrls, 'url': url, 'publication': 2, 'topic': 2}
+        bornAgain = {'title': title, 'author': author,
+        'date': date, 'body': body,
+        'images': imageUrls, 'url': url,
+        'publication': publicationId, 'topic': topicId}
         outlist.append(bornAgain)
 
     if switch == "JSON":
@@ -187,26 +196,27 @@ def getPrinceQURL(fromDate, toDate, type):
 
     return construction
 
+# DEBUG :: DEPRECATED AS API of jsonify_page() has changed
 # get today's articles in a list of JSON's using the time module
-def getTodaysArticles():
-    today = time.strftime("%m/%d/%Y")
-    # get today's articles
-    urls = getArticleURLS([today, today, "article"])
-    outputJSON = list()
-    for url in urls:
-        outputJSON.append(jsonify_page(url))
+# def getTodaysArticles():
+#     today = time.strftime("%m/%d/%Y")
+#     # get today's articles
+#     urls = getArticleURLS([today, today, "article"])
+#     outputJSON = list()
+#     for url in urls:
+#         outputJSON.append(jsonify_page(url))
+#
+#     return outputJSON
 
-    return outputJSON
-
-# get a specific date's articles as a list of JSONS
-def getDatesArticles(date):
-    # get today's articles
-    urls = getArticleURLS([date, date, "article"])
-    outputJSON = list()
-    for url in urls:
-        outputJSON.append(jsonify_page(url))
-
-    return outputJSON
+# # get a specific date's articles as a list of JSONS
+# def getDatesArticles(date):
+#     # get today's articles
+#     urls = getArticleURLS([date, date, "article"])
+#     outputJSON = list()
+#     for url in urls:
+#         outputJSON.append(jsonify_page(url))
+#
+#     return outputJSON
 
 
 # run main

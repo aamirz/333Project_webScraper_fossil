@@ -46,7 +46,6 @@ class Publication:
         try:
             #response = req.post(publicationPostUrl, json=prince.jsonify(), auth=authentication)
             #response = req.post(publicationPostUrl, json=json.load(prince.jsonify()), auth=authentication)
-            print self.jsonify()
             response = req.post(url, json=self.jsonify(), auth=authentication)
             #response = req.post(url=publicationPostUrl, json="{'name': 'lovley', 'logo':'warren', 'description':'is Mayor'}", auth=authentication)
             # handle the status of posting
@@ -142,8 +141,10 @@ def postPrinceTopics(prince):
     {'name': 'editorial', 'description': "The editorial board weighs in on important issues."}]
 
     princeTopicIds = list()
+    princeTopicIds.append({"publication": "prince"})
     for topic in princeTopics:
         princeTopicIds.append(prince.topicPost(topic))
+        prince.addTopic(topic)
 
     return princeTopicIds
 
@@ -157,30 +158,34 @@ def postNassTopics(nass):
     nass.addTopic(humor)
 
     nassTopicIds = list()
+    nassTopicIds.append({"publication": "nass"})
     for topic in nass.topics:
         nassTopicIds.append(nass.topicPost(topic))
 
     return nassTopicIds
+
 
 # run all the utilities
 def main():
     # format all the publication content
     prince = postPrince()
     nass = postNass()
-    masterTable = {"Prince": prince.id, "Nass": nass.id}
-
-    # # a master table of all the publications
-    # jsonOut = json.dumps(masterTable, sort_keys = True, indent = 4)
-    # # save each publication id for future use
-    # with open("idFile.txt", "w") as outf:
-    #     outf.write(jsonOut)
+    masterTable = {"prince": prince.id, "nass": nass.id}
 
     ## now do this for the nass!
     princeTopicIds = postPrinceTopics(prince)
-    print princeTopicIds
+    # princeOutData = [{"name": "prince"}, prince.topics, princeTopicIds]
+    #print princeTopicIds
     nassTopicIDs = postNassTopics(nass)
-    print nassTopicIDs
-    # now write the topics into a master table
+    # nassOutData = [{"name":"nass"}, nass.topics, nassTopicIDs]
+
+    # outData = [masterTable, princeOutData, nassOutData]
+    outData = [masterTable, princeTopicIds, nassTopicIDs]
+    # a master table of all the publications
+    jsonOut = json.dumps(outData, sort_keys = True, indent = 4)
+    # save each publication id for future use
+    with open("idFile.txt", "w") as outf:
+        outf.write(jsonOut)
 
 
 

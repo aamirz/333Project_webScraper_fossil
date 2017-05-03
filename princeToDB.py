@@ -53,6 +53,8 @@ def main():
             # try-catch block
             try:
                 #response = req.post(url, json=json_out, headers=headers)
+                #json_out[0].pop("images", None)
+                #print json_out[0]
                 response = req.post(url, json=json_out[0], auth=authentication)
                 # handle the status of posting
                 status = response.status_code
@@ -87,13 +89,6 @@ def main():
                             print "NOT SUCCESSFUL POSTING IMAGE URL: " + imUrl + " STATUS CODE: " + str(status)
                     except Exception:
                         pass
-
-
-#     url = "http://www.dailyprincetonian.com/article/2017/03/park-president-impeached"
-#     js = sp.jsonify_page(url = url)
-#     with open('sampleArticle.json', 'w') as outfile:
-#         json.dump(js, outfile)
-#         postOne(url, port)
 
 
 if __name__=="__main__":
