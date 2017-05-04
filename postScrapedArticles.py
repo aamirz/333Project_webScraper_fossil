@@ -10,6 +10,21 @@ import requests as req
 import json
 from requests.auth import HTTPBasicAuth
 
+authentication = HTTPBasicAuth('aamirz', 'aamirziscool')
+
+# get all of today's articles that have already been posted
+def getAllPostedTitles(date):
+    s = '/'
+    year, month, day = date.split('_')
+    urlString = 'http://prowler333.herokuapp.com/articles/date' + s + year + s + month + s + day
+    posted = req.get(urlString, auth=authentication)
+    jsonString = posted.content
+    articles = json.loads(jsonString)
+    titles = list()
+    for article in articles:
+        titles.append(article["title"])
+    return titles
+
 
 # post all of today's articles
 # three command line arguments
@@ -34,13 +49,20 @@ def main():
     imdatUrl = "https://prowler333.herokuapp.com/images/"
 #    url = "http://localhost:" + str(port)  + "/"
     headers = {'content-type': 'application/json'}
-    authentication = HTTPBasicAuth('aamirz', 'aamirziscool')
+
+    # get today's article titles to check if we have already posted
+    titles = getAllPostedTitles(today)
 
     for i in range(0, n):
         filePath = prefix + s + "article_" + str(i) + ".txt"
 
         with open(filePath) as jsonFile:
             json_out = json.load(jsonFile)
+
+            # if already in database, do not post!
+            if json_out[0]["title"] in titles:
+                continue
+
             # reformat the date
             json_out[0]['date'] = year + "-" + month + "-" + day + " " + "00:00:00"
             #print json_out
