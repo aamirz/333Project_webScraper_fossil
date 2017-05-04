@@ -8,8 +8,12 @@
 # the data after posting. 
 #
 
-# the path to this directory (for cron)
-DIR="~/"
+# launch shell
+#!/bin/bash
+
+# cron preamble
+cd ~
+cd prowler_webScraper/
 
 # get today's date 
 TODAY="$(date "+%Y_%m_%d")"
@@ -17,10 +21,11 @@ DAY="$(date "+%m/%d/%Y")"
 #DAY="04/13/2017"
 #TODAY="2017_04_13"
 
+PUBDIRS=(./data/*)
+
 # make the date directories for each publication 
-for file in ./data/*
+for file in "${PUBDIRS[@]}"
 do 
-# affix prefix to this for cron
 mkdir "${file}/${TODAY}"
 done
 
@@ -28,19 +33,22 @@ done
 python getTodaysArticles.py "./data" $DAY
 
 # post all of today's articles, generate a count
-for file in ./data/*
+for file in "${PUBDIRS[@]}"
 do
 # get the number of articles 
 echo "${file}"
-# remember to affix the prefix!
 N="$(ls "${file}/${TODAY}/" | wc -l)"
 echo $N
-python princeToDB.py "./${file}/${TODAY}" $N $TODAY
-
-# now remove the parent directory and all contents
-rm -rf "./${file}/${TODAY}"
+python postScrapedArticles.py "${file}/${TODAY}" $N $TODAY
 done
 
+# now remove all of data 
+for file in "${PUBDIRS[@]}"
+do
+# now remove the parent directory and all contents
+echo "removing ${file}/${TODAY}"
+#rm -rf "./${file}/${TODAY}"
+done
 
 # success
 exit 0
