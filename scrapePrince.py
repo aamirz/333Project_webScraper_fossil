@@ -148,14 +148,24 @@ def getImURLS(soup):
 
     return out
 
+# Get all the urls that we need to pull for the daily princetonian, with the date
+# date is a string of the form mm/dd/yyyy
+# topicIds is a list of integer ids
+# returns a list of lists (for each: first element is topic, next is a list of urls)
+def getPrinceUrls(date, topics):
+    outData = list()
+    for topic in topics:
+        todayUrls = getArticleURLS([date, date, "article"], topic["name"])
+        outData.append([topic, todayUrls])
+    return outData
 
 # return a list of all article URLS from a query page
 # params is a list of length three, the first element is
 # the fromDate, second is toDate, third is query type
 # dates are in the string format "mm/dd/yyyy"
 # type is one of these possible strings: "article"; "media"; "post"
-def getArticleURLS(params):
-    qURL = getPrinceQURL(params[0], params[1], params[2])
+def getArticleURLS(params, topicTag):
+    qURL = getPrinceQURL(params[0], params[1], params[2], topicTag)
     soup = sb.getSoup(qURL)
     links = soup.select(".clearfix a")
     urls = list()
@@ -173,7 +183,8 @@ def getArticleURLS(params):
 # a QURL is a query URL
 # dates are in the string format "mm/dd/yyyy"
 # type is one of these possible strings: "article"; "media"; "post"
-def getPrinceQURL(fromDate, toDate, type):
+# topicTag is the topic string
+def getPrinceQURL(fromDate, toDate, atype, topicTag):
     fromMonth, fromDay, fromYear = fromDate.split("/")
     toMonth, toDay, toYear = toDate.split("/")
 
@@ -185,38 +196,17 @@ def getPrinceQURL(fromDate, toDate, type):
     toMonthBase = "&te_month="
     toDayBase = "&te_day="
     toYearBase = "&te_year="
-    typeBase = "&au=&tg=&ty="
+    tagBase = "&au=&tg="
+    typeBase = "&ty="
     endURL = "&o=date"
 
     construction = baseURL + fromMonthBase + fromMonth
     construction = construction + fromDayBase + fromDay
     construction = construction + fromYearBase + fromYear + toMonthBase
     construction = construction + toMonth + toDayBase + toDay
-    construction = construction + toYearBase + toYear + typeBase + type + endURL
+    construction = construction + toYearBase + toYear + tagBase + topicTag + typeBase + atype + endURL
 
     return construction
-
-# DEBUG :: DEPRECATED AS API of jsonify_page() has changed
-# get today's articles in a list of JSON's using the time module
-# def getTodaysArticles():
-#     today = time.strftime("%m/%d/%Y")
-#     # get today's articles
-#     urls = getArticleURLS([today, today, "article"])
-#     outputJSON = list()
-#     for url in urls:
-#         outputJSON.append(jsonify_page(url))
-#
-#     return outputJSON
-
-# # get a specific date's articles as a list of JSONS
-# def getDatesArticles(date):
-#     # get today's articles
-#     urls = getArticleURLS([date, date, "article"])
-#     outputJSON = list()
-#     for url in urls:
-#         outputJSON.append(jsonify_page(url))
-#
-#     return outputJSON
 
 
 # run main

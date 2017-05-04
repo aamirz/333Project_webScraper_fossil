@@ -1,7 +1,9 @@
 """
-Aamir Zainulabadeen
-
-Base functions to be used by all of the scraping scripts.
+# scrapeBase.py
+#
+# Author: Aamir Zainulabadeen
+#
+# Base functions to be used by all of the scraping scripts.
 """
 import sys
 import json
@@ -109,3 +111,47 @@ def getPublicationTopics(publication):
 
         # if the fail the search, return -1
         return -1
+
+# pull the entire publication that is passed with these params
+# url topic list is a list of lists that contain the topic as the
+# first element and the rest of the list is string urls
+# Fjsonify is a function that jsonifys an url
+# saveDir is the directory in which to save the pages pulled
+def publicationPull(urlTopicList, Fjsonify, saveDir):
+    # param for naming each article
+    i = 0
+    titleList = list()
+    for urlTopic in urlTopicList:
+        topic = urlTopic[0]
+        for url in urlTopic[1]:
+            # the function takes a list of urls as a
+            # general argument, but our database only
+            # accepts one post at a time
+            json_out = Fjsonify(urls=[url], topicId=topic["id"])
+            title = json.loads(json_out)[0]['title']
+            # if we have already saved this article, continue
+            if (title in titleList):
+                continue
+
+            # otherwise, save the article and record the title
+            titleList.append(title)
+            fPath = saveDir + '/' + "article_" + str(i) + ".txt"
+            with open(fPath, "w") as outF:
+                outF.write(json_out)
+            i = i + 1
+
+    return i
+
+# Pulls the given resource for the given publication (str)
+# date (str:: 'mm/dd/yyyy'), FgetUrls (function to get the urls for this publication),
+# Fjsonify (function to jsonify the given urls) and saves to saveDir
+# The return value is a count of the articles pulled
+def pull(publication, date, FgetUrls, Fjsonify, saveDir):
+    # get the topics for this publication
+    topics = getPublicationTopics(publication)
+    # get the url topic list for this date
+    utList = FgetUrls(date=date, topics=topics)
+    # get the articles for these urls and save them in saveDir
+    count = publicationPull(urlTopicList=utList, Fjsonify=Fjsonify, saveDir=saveDir)
+
+    return count
