@@ -1,4 +1,4 @@
-############################################################################################
+"""
 # scrapePrince.py
 #
 #
@@ -8,7 +8,7 @@
 #
 # The base methods for scraping the Daily Princetonian. See function comments for
 # details.
-############################################################################################
+"""
 
 # dependencies
 import sys

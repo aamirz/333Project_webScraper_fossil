@@ -23,6 +23,11 @@ def gta_reformat(date):
     month, day, year = date.split("/")
     return year + "_" + month + "_" + day
 
+# make the save path for today's article
+def savePath(prefix, publication, today):
+    s = "/"
+    spath = prefix + s + publication + s + gta_reformat(today)
+    return spath
 
 # takes two command line args, the first is the prefix to the parent of saving
 # dir, the second is the day's date (if we want to pull a day other than today)
@@ -41,7 +46,7 @@ def main():
 
     # pull the daily princetonian
     sb.pull(publication="prince", date=today, FgetUrls=sp.getPrinceUrls,
-    Fjsonify=sp.jsonify_page, saveDir=prefix)
+    Fjsonify=sp.jsonify_page, saveDir=savePath(prefix, "prince", today))
 
 
 # function to make a new directory taken from stackoverflow answer #2

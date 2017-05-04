@@ -1,5 +1,5 @@
 """
-postScrapedArticle.py
+postScrapedArticles.py
 Author: Aamir Zainulabadeen
 
 POSTS articles to our database.
@@ -13,23 +13,18 @@ from requests.auth import HTTPBasicAuth
 
 # post all of today's articles
 # three command line arguments
-# first is path prefix
+# first is path prefix (gives where the articles live)
 # second is the number of articles in the current article dir
-# third is the port number (optional)
+# third is the day
 def main():
     # always specify the path to the webscraped directories
     prefix = str(sys.argv[1])
-    today = prefix.split('/')
-    today = today[1]
+    #print prefix
+    #today = prefix.split('/')
+    today = str(sys.argv[3])
     year, month, day = today.split('_')
     # the number of articles in the directory
     n = int(sys.argv[2])
-
-    # the default port is 8080
-    if len(sys.argv) < 4:
-        port = 8080
-    else:
-        port = int(sys.argv[3])
 
     # path building
     s = "/"

@@ -9,7 +9,7 @@ PYTHONIOENCODING=UTF-8
 export PYTHONIOENCODING
 
 mkdir "./${DAYDIR}"
-python getTodaysArticles.py ./ $DAY
+python getTodaysArticles.py "./${DAYDIR}" $DAY
 # testing for local host
 #python princeToDB.py "./${DAYDIR}" 12 8080
 
