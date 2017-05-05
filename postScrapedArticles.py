@@ -78,7 +78,7 @@ def main():
                 if status != 201:
                     print "NOT SUCCESSFUL POSTING ARTICLE: " + str(i) + " STATUS CODE: " + str(status)
                 else:
-                    print "SUCCESSFUL"
+                    print "SUCCESSFUL POSTING: " + json_out[0]["title"] + " IN PUBLICATION " + json_out[0]["publication"]
             except Exception:
                 pass
 
