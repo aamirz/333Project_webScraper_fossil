@@ -6,18 +6,17 @@
 # Pull today's contents for all publications. 
 # Save them all to the data/ directory. Then removes all 
 # the data after posting. 
-#
+# 
+# TAKES TWO COMMAND LINE DATE ARGUMENTS:
+# first argument is of form 
+# YYYY_MM_DD
+# second is of form
+# MM/DD/YYYY
 
-# launch shell
-#!/bin/bash
-
-# cron preamble
-cd ~
-cd prowler_webScraper/
 
 # get today's date 
-TODAY="$(date "+%Y_%m_%d")"
-DAY="$(date "+%m/%d/%Y")"
+TODAY=$1
+DAY=$2
 #DAY="04/13/2017"
 #TODAY="2017_04_13"
 
