@@ -57,7 +57,8 @@ def jsonify_page(urls, topicId, switch="JSON"):
         bornAgain = {'title': title, 'author': author,
         'date': date, 'body': body,
         'images': imageUrls, 'url': url,
-        'publication': publicationId, 'topic': topicId}
+        'publication': publicationId, 'topic': topicId,
+        'posted': False, 'id': 0}
         outlist.append(bornAgain)
 
     if switch == "JSON":

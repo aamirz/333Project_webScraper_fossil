@@ -79,6 +79,8 @@ def main():
                     print "NOT SUCCESSFUL POSTING ARTICLE: " + str(i) + " STATUS CODE: " + str(status)
                 else:
                     print "SUCCESSFUL POSTING: " + json_out[0]["title"] + " IN PUBLICATION " + str(json_out[0]["publication"])
+                    #json_out[0]["posted"] = True
+                    #json_out[0]["id"] = response.content[0]['id']
             except Exception:
                 pass
 
