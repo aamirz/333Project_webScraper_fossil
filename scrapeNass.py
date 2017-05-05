@@ -10,13 +10,16 @@ import json
 import re
 import scrapeBase as sb
 
+# pull the id from the master table
+publicationId = sb.getPublicationId("nass")
+
 """
 Output depends on switch. The default output is an encoded JSON string with
 article title, date, author, and body (with the paragraphs joined by newlines).
 If swtich is anyting else other than JSON, the output is a list
 with one dict containing the page (for testing purposes).
 """
-def jsonify_page(urls, switch="JSON"):
+def jsonify_page(urls, topicId, switch="JSON"):
     outlist = list()
 
     for url in urls:
@@ -29,7 +32,7 @@ def jsonify_page(urls, switch="JSON"):
         body = getBody(soup)
         # now convert to json dict, publication should correspond to nass, topic should be misc
         bornAgain = {'title': title, 'author': author, 'date': date, 'body': body,
-            'images': imageUrls, 'url': url, 'publication': 2, 'topic': 2}
+            'images': imageUrls, 'url': url, 'publication': publicationId, 'topic': topicId}
         outlist.append(bornAgain)
 
     if switch == "JSON":
@@ -45,8 +48,13 @@ def buildTitle(elements):
     s = " "
     build = ""
     # build the out string
+    i = 0
     for el in core:
-        build = build + s + el
+        if i == 0:
+            build = build + el
+            i = 1
+        else:
+            build = build + s + el
     return build
 
 # get the title from our soup, gives formatted string
@@ -86,6 +94,15 @@ def getBody(soup):
     s = " \n "
     for con in content:
         body = body + s + con.text
+
+    if body == "":
+        content = soup.select(".post-content p")
+        for con in content:
+            body = body + s + con.text
+
+    if body == "":
+        return "/empty"
+
     return body
 
 
@@ -142,3 +159,53 @@ def getArchiveIssueLinks(archiveUrl="http://www.nassauweekly.com/issue/"):
     for el in elements:
         dates.append(sb.parseDate(el.text).split(" ")[0])
     return [issueUrls, dates]
+
+
+# Return all the issues that are "fresher" than a given date
+# date is of the form YYYY-MM-DD
+def getBeyondDatIssues(date):
+    # pull links and dates
+    urlDat = getArchiveIssueLinks()
+    urls = urlDat[0]
+    dates = urlDat[1]
+
+    # collect the indexes of all valid dates
+    i = 0
+    iwanted = list()
+    for dat in dates:
+        # if the issue came out on or before our date
+        # the direct string comparison works
+        if date <= dat:
+            iwanted.append(i)
+
+        # increment our counter
+        i = i + 1
+    urlWanted = list()
+
+    # collect all valid urls
+    for i in iwanted:
+        urlWanted.append(urls[i])
+
+    # return the issue urls
+    return urlWanted
+
+# get all the articles beyond a certain date
+# date is in YYYY-MM-DD format
+# the topic argument completes the scrapeBase API but is not needed
+# for the nassau weekly
+def getNassUrls(date, topics):
+    # get the issues beyond
+    issues = getBeyondDatIssues(date)
+
+    # now for each issue get all of the articles urls
+    urls = list()
+    for issue in issues:
+        urls = urls + getIssueArticleUrls(issue)
+
+    # bind the urls to topics (there should only be one)
+    topic = topics[0]
+    outData = list()
+    outData.append([topic, urls])
+
+    # return all of the urls
+    return outData

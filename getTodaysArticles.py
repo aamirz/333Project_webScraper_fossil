@@ -19,14 +19,15 @@ import scrapePrince as sp
 import scrapeNass as sn
 
 # reformat the data from the input
-def gta_reformat(date):
+# c is the separating character
+def gta_reformat(date, c):
     month, day, year = date.split("/")
-    return year + "_" + month + "_" + day
+    return year + c + month + c + day
 
 # make the save path for today's article
 def savePath(prefix, publication, today):
     s = "/"
-    spath = prefix + s + publication + s + gta_reformat(today)
+    spath = prefix + s + publication + s + gta_reformat(today, '_')
     return spath
 
 # takes two command line args, the first is the prefix to the parent of saving
@@ -34,7 +35,6 @@ def savePath(prefix, publication, today):
 def main():
     ## the first command line arg is the prefix to the saving directory
     prefix = str(sys.argv[1])
-    s = "/"
     if len(sys.argv) < 3:
         today = time.strftime("%m/%d/%Y")
     else:
@@ -45,8 +45,12 @@ def main():
         return 0
 
     # pull the daily princetonian
-    sb.pull(publication="prince", date=today, FgetUrls=sp.getPrinceUrls,
+    nPrince = sb.pull(publication="prince", date=today, FgetUrls=sp.getPrinceUrls,
     Fjsonify=sp.jsonify_page, saveDir=savePath(prefix, "prince", today))
+
+    # pull the nassau weekly
+    nNass = sb.pull(publication="nass", date=gta_reformat(today, '-'), FgetUrls=sn.getNassUrls,
+    Fjsonify=sn.jsonify_page, saveDir=savePath(prefix, "nass", today))
 
 
 # function to make a new directory taken from stackoverflow answer #2
