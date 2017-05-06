@@ -43,7 +43,7 @@ def jsonify_page(urls, topicId, switch="JSON"):
         soup = sb.getSoup(url)
 
         # get the page content
-        title = sb.listCatch(getTitle(soup))
+        title = titleFormat(sb.listCatch(getTitle(soup)))
         author = sb.listCatch(getAuthor(soup))
         date = getDate(soup)
         # get the image urls
@@ -65,6 +65,25 @@ def jsonify_page(urls, topicId, switch="JSON"):
         return json.dumps(outlist, sort_keys = True, indent = 4)
     else:
         return outlist
+
+# format the title
+def titleFormat(title):
+    parts = title.split(" ")
+    #return parts
+    outString = ""
+    for part in parts[0:-1]:
+        if part == " " or part == '':
+            continue
+        outString = outString + part + " "
+
+    if parts[-1] == " " or parts[-1] == '':
+        if outString[-1] == ' ':
+            return outString[0:-1]
+        else:
+            return outString
+    else:
+        return outString + parts[-1]
+
 
 # utility testing
 def testUrl(testUrl):

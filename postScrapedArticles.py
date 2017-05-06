@@ -2,10 +2,12 @@
 postScrapedArticles.py
 Author: Aamir Zainulabadeen
 
-POSTS articles to our database.
+POSTS articles to our database. Needs only for the article files to be
+named and formatted correctly, simply uploads all articles of today that
+have not been already posted to the database.
 """
 import sys
-import scrapePrince as sp
+import re
 import requests as req
 import json
 from requests.auth import HTTPBasicAuth
@@ -25,6 +27,21 @@ def getAllPostedTitles(date):
         titles.append(article["title"])
     return titles
 
+
+# say whether two titles match, ignore spaceing issues
+def doesMatch(a, b):
+    if re.match(a, b) is None:
+        return False
+    else:
+        return True
+
+# say whether any of the article titles match this one
+def titleExists(title, titleList):
+    for t in titleList:
+        if doesMatch(title, t):
+            return True
+    # if we pass the forloop, it is not found in the list
+    return False
 
 # post all of today's articles
 # three command line arguments
