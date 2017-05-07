@@ -1,34 +1,34 @@
 [
     {
-        "nass": 462, 
-        "prince": 452
+        "nass": 12, 
+        "prince": 2
     }, 
     [
         {
             "publication": "prince"
         }, 
         {
-            "id": 532, 
+            "id": 2, 
             "name": "news"
         }, 
         {
-            "id": 542, 
+            "id": 12, 
             "name": "opinion"
         }, 
         {
-            "id": 552, 
+            "id": 22, 
             "name": "sports"
         }, 
         {
-            "id": 562, 
+            "id": 32, 
             "name": "street"
         }, 
         {
-            "id": 572, 
+            "id": 42, 
             "name": "blog"
         }, 
         {
-            "id": 582, 
+            "id": 52, 
             "name": "editorial"
         }
     ], 
@@ -37,7 +37,7 @@
             "publication": "nass"
         }, 
         {
-            "id": 592, 
+            "id": 62, 
             "name": "humor"
         }
     ]
