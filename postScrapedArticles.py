@@ -93,9 +93,9 @@ def main():
                 # handle the status of posting
                 status = response.status_code
                 if status != 201:
-                    print "NOT SUCCESSFUL POSTING ARTICLE: " + str(i) + " STATUS CODE: " + str(status)
+                    print "NOT SUCCESSFUL POSTING ARTICLE:\t " + str(i) + "\t STATUS CODE: \t" + str(status)
                 else:
-                    print "SUCCESSFUL POSTING: " + json_out[0]["title"] + " IN PUBLICATION " + str(json_out[0]["publication"])
+                    print "SUCCESSFUL POSTING:\t " + json_out[0]["title"] + "\t IN PUBLICATION \t" + str(json_out[0]["publication"])
                     #json_out[0]["posted"] = True
                     #json_out[0]["id"] = response.content[0]['id']
             except Exception:

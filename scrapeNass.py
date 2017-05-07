@@ -162,7 +162,7 @@ def getArchiveIssueLinks(archiveUrl="http://www.nassauweekly.com/issue/"):
     return [issueUrls, dates]
 
 
-# Return all the issues that are "fresher" than a given date
+# Return all the issues that are the same as a given date
 # date is of the form YYYY-MM-DD
 def getBeyondDatIssues(date):
     # pull links and dates
@@ -176,7 +176,7 @@ def getBeyondDatIssues(date):
     for dat in dates:
         # if the issue came out on or before our date
         # the direct string comparison works
-        if date <= dat:
+        if date == dat:
             iwanted.append(i)
 
         # increment our counter
