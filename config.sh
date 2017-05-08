@@ -4,7 +4,7 @@
 
 #!/bin/bash
 
-# format our database 
+# format our database
 python formatDB.py
 
 # make our data directories for each publication

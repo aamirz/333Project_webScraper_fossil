@@ -133,12 +133,12 @@ def postPrinceTopics(prince):
         print "ERROR IN POSTPRINCETOPICS, PRINCE IS NONE"
         exit()
 
-    princeTopics = [{'name': "news", 'description': "The most current events on Princeton's campus."},
-    {'name': "opinion", 'description': "Important perspectives from around Princeton's campus."},
-    {'name': "sports", 'description': "The latest on our Tigers' atheltic feats."},
-    {'name': 'street', 'description': "The day to day on campus events, fashion, and more."},
-    {'name': 'blog', 'description': "Hear the most creative voices on campus."},
-    {'name': 'editorial', 'description': "The editorial board weighs in on important issues."}]
+    princeTopics = [{'name': "News", 'description': "The most current events on Princeton's campus."},
+    {'name': "Opinion", 'description': "Important perspectives from around Princeton's campus."},
+    {'name': "Sports", 'description': "The latest on our Tigers' atheltic feats."},
+    {'name': 'Street', 'description': "The day to day on campus events, fashion, and more."},
+    {'name': 'Blog', 'description': "Hear the most creative voices on campus."},
+    {'name': 'Editorial', 'description': "The editorial board weighs in on important issues."}]
 
     princeTopicIds = list()
     princeTopicIds.append({"publication": "prince"})
@@ -154,7 +154,7 @@ def postNassTopics(nass):
     if nass is None:
         print "ERROR in POSTNASSTOPICS, NASS IS NONE"
         exit()
-    humor = {'name': 'humor', 'description': 'all things funny in Princeton and beyond'}
+    humor = {'name': 'The Nassau Weekly', 'description': 'all things funny in Princeton and beyond'}
     nass.addTopic(humor)
 
     nassTopicIds = list()
