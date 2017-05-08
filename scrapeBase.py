@@ -59,6 +59,8 @@ def convertDate(date, c):
 def parseDate(date):
     if date != "/empty":
         found = re.search(dateRE, date)
+        if found is None:
+            return "/empty"
         elect = found.group(0)
         return convertDate(elect, " ")
     else:
