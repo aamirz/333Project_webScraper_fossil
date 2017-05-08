@@ -9,27 +9,27 @@
         }, 
         {
             "id": 2, 
-            "name": "news"
+            "name": "News"
         }, 
         {
             "id": 12, 
-            "name": "opinion"
+            "name": "Opinion"
         }, 
         {
             "id": 22, 
-            "name": "sports"
+            "name": "Sports"
         }, 
         {
             "id": 32, 
-            "name": "street"
+            "name": "Street"
         }, 
         {
             "id": 42, 
-            "name": "blog"
+            "name": "Blog"
         }, 
         {
             "id": 52, 
-            "name": "editorial"
+            "name": "Editorial"
         }
     ], 
     [
@@ -38,7 +38,7 @@
         }, 
         {
             "id": 62, 
-            "name": "humor"
+            "name": "The Nassau Weekly"
         }
     ]
 ]
