@@ -88,18 +88,18 @@ def getDate(soup):
 # get the body of text from the input
 def getBody(soup):
     # get all the text from the page
-    content = soup.select(".post-content .s1")
-
+    #content = soup.select(".post-content .s1")
+    #content = soup.select(".post-content p")
     # join it all in one body
     body = ""
     s = " \n "
+    # for con in content:
+    #     body = body + s + con.text
+
+    #if body == "":
+    content = soup.select(".post-content p")
     for con in content:
         body = body + s + con.text
-
-    if body == "":
-        content = soup.select(".post-content p")
-        for con in content:
-            body = body + s + con.text
 
     if body == "":
         return "/empty"
