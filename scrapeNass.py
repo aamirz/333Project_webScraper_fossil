@@ -85,6 +85,15 @@ def getDate(soup):
     else:
         return dirtyDate
 
+# check the body element for being an image captions
+def checkFirstBodyEl(el):
+    elClass = el['class']
+    if len(elClass) > 0:
+        text = elClass[0]
+        if text == 'wp-caption-text':
+            return True
+    return False
+
 # get the body of text from the input
 def getBody(soup):
     # get all the text from the page
@@ -92,13 +101,15 @@ def getBody(soup):
     #content = soup.select(".post-content p")
     # join it all in one body
     body = ""
-    s = " \n "
+    s = "\n\n"
     # for con in content:
     #     body = body + s + con.text
 
     #if body == "":
     content = soup.select(".post-content p")
     for con in content:
+        if checkFirstBodyEl(con):
+            continue
         body = body + s + con.text
 
     if body == "":
