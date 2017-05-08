@@ -88,7 +88,7 @@ def postPrince():
     # for now we are using the old logo because the new one looks nasty
     prince = Publication(name="The Daily Princetonian",
     #logo=sb.listCatchItem(princeSoup.select(".col-md-8 a img"))["src"],
-    logo = 'https://expedictionary.files.wordpress.com/2013/10/dailyprince.jpeg',
+    logo = 'http://dirgyzwl2hnqq.cloudfront.net/20170330XJxw8OoJDm/dist/img/favicons/apple-touch-icon.png',
     description=sb.listCatchItem(princeAboutSoup.select(".col-sm-12 p")).text)
     id = prince.ppost()
     print "prince id: " + str(id)
@@ -104,9 +104,10 @@ def postNass():
     nassAboutSoup = sb.getSoup(nassAboutUrl)
 
     # the logo
-    elements = nassSoup.select(".logo img")
-    el = sb.listCatchItem(elements)
-    logo = el["src"]
+    #elements = nassSoup.select(".logo img")
+    #el = sb.listCatchItem(elements)
+    #logo = el["src"]
+    logog = 'https://walkercarpenter.files.wordpress.com/2016/02/nass-circle.png?w=800'
 
     # about
     elements = nassAboutSoup.select(".post-content p")
