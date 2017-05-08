@@ -107,7 +107,7 @@ def postNass():
     #elements = nassSoup.select(".logo img")
     #el = sb.listCatchItem(elements)
     #logo = el["src"]
-    logog = 'https://walkercarpenter.files.wordpress.com/2016/02/nass-circle.png?w=800'
+    logo = 'https://walkercarpenter.files.wordpress.com/2016/02/nass-circle.png?w=800'
 
     # about
     elements = nassAboutSoup.select(".post-content p")
