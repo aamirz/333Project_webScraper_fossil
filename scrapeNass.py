@@ -87,7 +87,7 @@ def getDate(soup):
 
 # check the body element for being an image captions
 def checkFirstBodyEl(el):
-    elClass = el['class']
+    elClass = el.get('class', [])
     if len(elClass) > 0:
         text = elClass[0]
         if text == 'wp-caption-text':
