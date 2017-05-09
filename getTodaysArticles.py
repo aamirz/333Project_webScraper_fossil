@@ -17,6 +17,7 @@ import errno
 import scrapeBase as sb
 import scrapePrince as sp
 import scrapeNass as sn
+import scrapeTigerMag as stm
 
 # reformat the data from the input
 # c is the separating character
@@ -51,6 +52,10 @@ def main():
     # pull the nassau weekly
     nNass = sb.pull(publication="nass", date=gta_reformat(today, '-'), FgetUrls=sn.getNassUrls,
     Fjsonify=sn.jsonify_page, saveDir=savePath(prefix, "nass", today))
+
+    # # pull the Princeton tiger
+    # ntigerMag = sb.pull(publication="tigerMag", date=today, FgetUrls=stm.getAllUrls,
+    # Fjsonify=stm.jsonify_page, saveDir=savePath(prefix, "tigerMag", today))
 
 
 # function to make a new directory taken from stackoverflow answer #2

@@ -13,7 +13,7 @@ import scrapeBase as sb
 
 # DEBUG
 # read in the publicationId from the master file
-publicationId = 22
+publicationId = sb.getPublicationId("tigerMag")
 
 # fulfill the scrapeBase API
 # topicId is a list of topics

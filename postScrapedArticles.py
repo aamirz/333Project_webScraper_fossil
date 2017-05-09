@@ -81,7 +81,7 @@ def main():
                 continue
 
             # reformat the date
-            json_out[0]['date'] = year + "-" + month + "-" + day + " " + "00:00:00"
+            json_out[0]['date'] = year + "-" + month + "-" + day + " " + "06:00:00"
             #print json_out
             #print "json to upload: " + json_out[0]["title"]
             # try-catch block
@@ -106,7 +106,7 @@ def main():
             print len(responseData)
 
             # if the response fails, skip the rest, do not post any images
-            if (len(responseData) == 1):
+            if (responseData.get('id', "BLAH") == "BLAH"):
                 continue
 
             # post all images associated with an article

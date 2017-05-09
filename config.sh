@@ -12,12 +12,14 @@ DIR='./data'
 mkdir $DIR
 mkdir $DIR/prince
 mkdir $DIR/nass
+mkdir $DIR/tigerMag
 
 # the old publication archive pullings
 DIR='./oldData'
 mkdir $DIR
 mkdir $DIR/prince
 mkdir $DIR/nass
+mkdir $DIR/tigerMag
 
+exit 0
 
-exit
