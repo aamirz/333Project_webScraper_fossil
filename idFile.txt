@@ -1,44 +1,66 @@
 [
     {
-        "nass": 12, 
-        "prince": 2
-    }, 
+        "nass": 12,
+        "prince": 2,
+        "tigerMag": 42
+    },
     [
         {
             "publication": "prince"
-        }, 
+        },
         {
-            "id": 2, 
+            "id": 2,
             "name": "News"
-        }, 
+        },
         {
-            "id": 12, 
+            "id": 12,
             "name": "Opinion"
-        }, 
+        },
         {
-            "id": 22, 
+            "id": 22,
             "name": "Sports"
-        }, 
+        },
         {
-            "id": 32, 
+            "id": 32,
             "name": "Street"
-        }, 
+        },
         {
-            "id": 42, 
+            "id": 42,
             "name": "Blog"
-        }, 
+        },
         {
-            "id": 52, 
+            "id": 52,
             "name": "Editorial"
         }
-    ], 
+    ],
     [
         {
             "publication": "nass"
-        }, 
+        },
         {
-            "id": 62, 
+            "id": 62,
             "name": "The Nassau Weekly"
+        }
+    ],
+    [
+        {
+            "publication": "tigerMag"
+        },
+        {
+            "id": 72,
+            "name": "Princeton"
+        },
+        {
+            "id": 82,
+            "name": "Advice"
+        },
+        {
+            "id": 92,
+            "name": "Letters"
+        },
+        {
+            "id": 2,
+            "name": "News"
         }
     ]
 ]

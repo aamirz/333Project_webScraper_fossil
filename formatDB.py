@@ -165,6 +165,79 @@ def postNassTopics(nass):
 
     return nassTopicIds
 
+# DEBUG
+# post the tiger magazine
+def postTigerMag():
+    # get the data from source
+    aboutURL = 'http://www.tigermag.com/about-us/'
+    aboutSoup = sb.getSoup(aboutURL)
+
+    # the logo
+    logo = 'https://upload.wikimedia.org/wikipedia/en/1/15/The_Princeton_Tiger_Logo.png'
+
+    # about
+    elements = aboutSoup.select(".hentry-content p")
+    about = ""
+    s = " "
+    # shortened it as database would not accept long strings
+    for p in elements:
+        about = about + s + p.text
+
+    tigerMag = Publication(name="The Princeton Tiger", logo = logo, description = about)
+
+    #mId = 22
+    mId = tigerMag.ppost()
+    print "tiger mag id: " + str(mId)
+    tigerMag.addId(mId)
+    return tigerMag
+
+# post the tiger mag's topics on the given publication id
+def postTigerMagTopics(tigerMag):
+    if tigerMag is None:
+        print "ERROR in POSTTIGERMAGTOPICS, TIGERMAG IS NONE"
+        exit()
+    princeton = [{'name': 'Princeton', 'description': 'all things funny in Princeton and beyond, lawl'},
+    {'name': 'Advice', 'description' : 'We give great advice on all things around campus and beyond'},
+    {'name': 'Letters', 'description': 'We love writing letters to random people'}]
+
+    for topic in princeton:
+        tigerMag.addTopic(topic)
+
+    topicIds = list()
+    topicIds.append({"publication": "tigerMag"})
+    for topic in tigerMag.topics:
+        #print topic
+        topicIds.append(tigerMag.topicPost(topic))
+
+    # already posted in Daily Princetonian
+    topicIds.append({'name' : 'News', 'id' :  2})
+
+    return topicIds
+
+# only add the specified publication
+# to be done if the database is already formatted
+#
+def formatOne(name, postIt, postTopics):
+    # import the master id file
+    f = open("idFile.txt", "r")
+    idTable = json.load(f)
+    f.close()
+
+    # now that it is imported, append this name to the publication table
+    # then input the id to id file
+    publication = postIt()
+    idTable[0].update({name: publication.id})
+
+    # add the topics of this publication
+    # append to the master file
+    ourTopics = postTopics(publication)
+
+    idTable.append(ourTopics)
+
+    jsonOut = json.dumps(idTable, sort_keys = True, indent = 4)
+    # now write the table back to the id file
+    with open("idFile.txt", "w") as outf:
+        outf.write(jsonOut)
 
 # run all the utilities
 def main():
@@ -184,10 +257,13 @@ def main():
     outData = [masterTable, princeTopicIds, nassTopicIDs]
     # a master table of all the publications
     jsonOut = json.dumps(outData, sort_keys = True, indent = 4)
+
     # save each publication id for future use
     with open("idFile.txt", "w") as outf:
         outf.write(jsonOut)
 
+    # one's that were added later
+    format.formatOne("tigerMag", format.postTigerMag, format.postTigerMagTopics)
 
 
 if __name__=="__main__":
