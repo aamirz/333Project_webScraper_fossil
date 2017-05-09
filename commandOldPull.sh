@@ -8,6 +8,7 @@
 READ="./param_dates"
 READ=$1
 
+mkdir ./logs/old/
 #echo $READ
 
 while read p; do
