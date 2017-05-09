@@ -145,8 +145,9 @@ def publicationPull(urlTopicList, Fjsonify, saveDir):
     return i
 
 # Pulls the given resource for the given publication (str)
-# date (str:: 'mm/dd/yyyy'), FgetUrls (function to get the urls for this publication),
-# Fjsonify (function to jsonify the given urls) and saves to saveDir
+# FgetUrls (function to get the urls for this publication),
+# Fjsonify (function to jsonify the given urls) and saves to saveDir,
+# date (str:: 'mm/dd/yyyy'),
 # The return value is a count of the articles pulled
 def pull(publication, date, FgetUrls, Fjsonify, saveDir):
     # get the topics for this publication

@@ -46,12 +46,16 @@ def main():
         return 0
 
     # pull the daily princetonian
-    nPrince = sb.pull(publication="prince", date=today, FgetUrls=sp.getPrinceUrls,
-    Fjsonify=sp.jsonify_page, saveDir=savePath(prefix, "prince", today))
+    nPrince = sb.pull(publication="prince", date=today,
+    FgetUrls=sp.getPrinceUrls,
+    Fjsonify=sp.jsonify_page,
+    saveDir=savePath(prefix, "prince", today))
 
     # pull the nassau weekly
-    nNass = sb.pull(publication="nass", date=gta_reformat(today, '-'), FgetUrls=sn.getNassUrls,
-    Fjsonify=sn.jsonify_page, saveDir=savePath(prefix, "nass", today))
+    nNass = sb.pull(publication="nass", date=gta_reformat(today, '-'),
+    FgetUrls=sn.getNassUrls,
+    Fjsonify=sn.jsonify_page,
+    saveDir=savePath(prefix, "nass", today))
 
     # # pull the Princeton tiger
     # ntigerMag = sb.pull(publication="tigerMag", date=today, FgetUrls=stm.getAllUrls,
