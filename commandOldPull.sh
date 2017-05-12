@@ -1,14 +1,14 @@
-# commandOldPull.sh 
-# 
+# commandOldPull.sh
+#
 # Command the old pull for stuff in the daily Princetonian, over the file in command line arg.
-# 
+#
 # Aamir Zainulabadeen
 #
 
 READ="./param_dates"
 READ=$1
 
-mkdir ./logs/old/
+#mkdir -p ./logs/old/
 #echo $READ
 
 while read p; do

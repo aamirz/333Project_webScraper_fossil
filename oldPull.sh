@@ -14,7 +14,7 @@ PARDIR="./data"
 #TODAY="YYYY_MM_DD"
 #DAY="MM/DD/YYYY"
 SAVEME="./data/prince/${TODAY}"
-mkdir $SAVEME
+mkdir -p $SAVEME
 
 echo "PULLING OLD STUFF"
 echo $DAY
