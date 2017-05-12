@@ -20,7 +20,7 @@ def perdelta(start, end, delta):
 
 # print a range of dates
 def main():
-    for result in perdelta(date(2015, 01, 01), date(2017, 03, 31), timedelta(days=1)):
+    for result in perdelta(date(2002, 01, 01), date(2015, 01, 01), timedelta(days=1)):
         print result.strftime("%Y_%m_%d") + "\t" + result.strftime("%m/%d/%Y")
 
 # run main
