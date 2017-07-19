@@ -42,7 +42,7 @@ class Publication:
     def ppost(self):
         ## old url from fossil distribution, new one below for development
 ##        url = 'http://prowler333.herokuapp.com/publications/'
-        url = 'https://prowler-database.herokuapp.com/'
+        url = 'https://prowler-database.herokuapp.com/publications'
         status = 0
         try:
             #response = req.post(publicationPostUrl, json=prince.jsonify(), auth=authentication)

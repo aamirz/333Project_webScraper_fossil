@@ -10,7 +10,8 @@ the Nassau Weekly, etc.
 
 ## Launching to an EC2 Instance (or any Linux/UNIX based machine)
 
-On my Amazon AWS EC2 instance, the Web-Scraper is configured to run hourly via
+On my Amazon AWS EC2 instance (running Red Hat Linux),
+the Web-Scraper is configured to run hourly via
 the cron utility, which is a UNIX system level daemon that handles the
 automation of tasks. Note that the call to the datetime UNIX utility in
 `masterRun.sh` is configured specifically for Linux (the arguments for getting
@@ -30,3 +31,10 @@ like emacs) and make sure that `masterRun.sh` has permissions by running:
 
 `$ cd PATH_TO_WEB_SCRAPER`      
 `$ chmod +x masterRun.sh`
+
+## Summary of Shell Scripts (scraping automation)
+
+**autoPullToday.sh** : \****Deprecated*** An intermediate testing script for
+pulling articles to a local directory.
+
+**commandOldPull.sh** : 
