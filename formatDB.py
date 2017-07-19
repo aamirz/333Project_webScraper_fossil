@@ -1,7 +1,6 @@
 """"
 formatDB.py
 Aamir Zainulabadeen
-COS 333 Project : Prowler Application
 
 Format the database with both topics and publications.
 """
