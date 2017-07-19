@@ -18,7 +18,10 @@ authentication = HTTPBasicAuth('aamirz', 'aamirziscool')
 def getAllPostedTitles(date):
     s = '/'
     year, month, day = date.split('_')
-    urlString = 'http://prowler333.herokuapp.com/articles/date' + s + year + s + month + s + day
+## old config from fossil version of 333_project
+##    urlString = 'http://prowler333.herokuapp.com/articles/date' + s + year + s + month + s + day
+## new development url
+    urlString = 'https://prowler-database.herokuapp.com/' + s + year + s + month + s + day
     posted = req.get(urlString, auth=authentication)
     jsonString = posted.content
     articles = json.loads(jsonString)
