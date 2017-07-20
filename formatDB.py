@@ -65,7 +65,7 @@ class Publication:
     def topicPost(self, topic):
         ## old url for fossil edition, see url below
         ## url = 'http://prowler333.herokuapp.com/topics/'
-        url = 'https://prowler-database.herokuapp.com/publications/'
+        url = 'https://prowler-database.herokuapp.com/topics/'
         status = 0
         try:
             response = req.post(url, json=topic, auth=authentication)
@@ -246,18 +246,20 @@ def formatOne(name, postIt, postTopics):
 def main():
     # format all the publication content
     prince = postPrince()
-    nass = postNass()
-    masterTable = {"prince": prince.id, "nass": nass.id}
+    # nass = postNass()
+#    masterTable = {"prince": prince.id, "nass": nass.id}
+    masterTable = {"prince": prince.id}
 
     ## now do this for the nass!
     princeTopicIds = postPrinceTopics(prince)
     # princeOutData = [{"name": "prince"}, prince.topics, princeTopicIds]
-    #print princeTopicIds
-    nassTopicIDs = postNassTopics(nass)
+    # print princeTopicIds
+    # nassTopicIDs = postNassTopics(nass)
     # nassOutData = [{"name":"nass"}, nass.topics, nassTopicIDs]
 
     # outData = [masterTable, princeOutData, nassOutData]
-    outData = [masterTable, princeTopicIds, nassTopicIDs]
+    # outData = [masterTable, princeTopicIds, nassTopicIDs]
+    outData = [masterTable, princeTopicIds]
     # a master table of all the publications
     jsonOut = json.dumps(outData, sort_keys = True, indent = 4)
 
@@ -266,7 +268,8 @@ def main():
         outf.write(jsonOut)
 
     # one's that were added later
-    format.formatOne("tigerMag", format.postTigerMag, format.postTigerMagTopics)
+    ## erroneous 
+    ## formatOne("tigerMag", format.postTigerMag, format.postTigerMagTopics)
 
 
 if __name__=="__main__":
