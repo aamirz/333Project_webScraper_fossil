@@ -41,7 +41,7 @@ class Publication:
     # post a publication to the given url
     def ppost(self):
         ## old url from fossil distribution, new one below for development
-##        url = 'http://prowler333.herokuapp.com/publications/'
+        ##        url = 'http://prowler333.herokuapp.com/publications/'
         url = 'https://prowler-database.herokuapp.com/publications/'
         status = 0
         try:
@@ -247,7 +247,7 @@ def main():
     # format all the publication content
     prince = postPrince()
     # nass = postNass()
-#    masterTable = {"prince": prince.id, "nass": nass.id}
+    #    masterTable = {"prince": prince.id, "nass": nass.id}
     masterTable = {"prince": prince.id}
 
     ## now do this for the nass!
