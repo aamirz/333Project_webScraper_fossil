@@ -16,8 +16,10 @@ import errno
 # libraries written for prowler
 import scrapeBase as sb
 import scrapePrince as sp
-import scrapeNass as sn
-import scrapeTigerMag as stm
+
+# fossil modules 
+#import scrapeNass as sn
+#import scrapeTigerMag as stm
 
 # reformat the data from the input
 # c is the separating character
