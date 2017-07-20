@@ -65,8 +65,13 @@ def main():
     s = "/"
 
     # POST REQUEST ARGUMENTS
-    url = "https://prowler333.herokuapp.com/articles/"
-    imdatUrl = "https://prowler333.herokuapp.com/images/"
+
+    # old urls, need to fix these with global environment vars
+    # url = "https://prowler333.herokuapp.com/articles/"
+    # imdatUrl = "https://prowler333.herokuapp.com/images/"
+    url = "https://prowler-database.herokuapp.com/articles/"
+    imdatUrl = "https://prowler-database.herokuapp.com/images/"
+    
 #    url = "http://localhost:" + str(port)  + "/"
     headers = {'content-type': 'application/json'}
 

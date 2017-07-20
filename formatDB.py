@@ -63,7 +63,9 @@ class Publication:
 
     # post a topic to the database
     def topicPost(self, topic):
-        url = 'http://prowler333.herokuapp.com/topics/'
+        ## old url for fossil edition, see url below
+        ## url = 'http://prowler333.herokuapp.com/topics/'
+        url = 'https://prowler-database.herokuapp.com/publications/'
         status = 0
         try:
             response = req.post(url, json=topic, auth=authentication)
