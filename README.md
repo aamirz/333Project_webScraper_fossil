@@ -37,4 +37,25 @@ like emacs) and make sure that `masterRun.sh` has permissions by running:
 **autoPullToday.sh** : \****Deprecated*** An intermediate testing script for
 pulling articles to a local directory.
 
-**commandOldPull.sh** : 
+**commandOldPull.sh** : Extracts dates from an input file and then uses them
+to command a pull as well as a post to the database. Writes all output (success/fail)
+to a log file.
+
+**config.sh** : Formats the database with publication metadata.
+Formats the local directory (for pulling/posting) with a local
+folder for all future pulls.
+
+**masterRun.sh** : Performs pulls vial pullToday.sh for both today and yesterday. Takes today's date
+as a command line argument.
+
+**oldPull.sh** : Control for pulling old Daily Princetonian files. Two arguments
+command line arguments.
+
+**pullToday.sh** : Controls pulling/posting all of today's articles from every
+publication.
+
+**pullWeeks.sh** : \****Deprecated*** pull from a range of dates from the Prince.
+
+**refill.sh** : \****Deprecated***  Testing script to pull old Prince data.
+
+**runTests.sh**; **testPullPost.sh**; **testypoo.sh** : \****Deprecated***
